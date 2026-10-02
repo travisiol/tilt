@@ -1,0 +1,19 @@
+account #2 staked 0.02 ETH on DOWN in BTC round 1790967900
+click: null
+click: null
+connected as 0x7099…; the page shows the round's pots
+click: Stake 0.01 ETH on UP
+click: DOWN close below strike
+click: Stake 0.01 ETH on DOWN
+both stakes are in; the page reads: UP pot 0.01 ETH pays ×5.88 if it wins now DOWN pot 0.05 ETH
+  shot rounds-1536-local-open.png {"scrollWidth":1536,"innerWidth":1536}
+  shot rounds-390-local-open.png {"scrollWidth":390,"innerWidth":390}
+clock moved to 1790968203 (round ended at 1790968200)
+  shot rounds-1536-local-awaiting.png {"scrollWidth":1536,"innerWidth":1536}
+click: Settle
+settled through the site: DOWN won
+click: Claim 0.0118 ETH
+  shot rounds-1536-local-settled.png {"scrollWidth":1536,"innerWidth":1536}
+  shot rounds-390-local-settled.png {"scrollWidth":390,"innerWidth":390}
+wallet transactions asked by the site: [{"to":"0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0","value":"0x2386f26fc10000","data":"0x43107cd5"},{"to":"0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0","value":"0x2386f26fc10000","data":"0x43107cd5"},{"to":"0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0","value":"0x0","data":"0x6aeb4e5a"},{"to":"0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0","data":"0x7c20d5be"}]
+player balance change over the whole round (stakes, payout, gas): -0.008817410689500252 ETH

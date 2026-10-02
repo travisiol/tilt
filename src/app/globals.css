@@ -1,0 +1,329 @@
+@import "tailwindcss";
+@import "./tokens.css";
+
+/* Everything below lives in a layer: unlayered rules would beat Tailwind's utilities. */
+
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+  html {
+    background: var(--color-bone);
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.55;
+    background: var(--color-bone);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 3px;
+  }
+
+  button {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
+}
+
+@layer components {
+  .display {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 0.95;
+  }
+
+  .num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+
+  .card {
+    background: var(--color-paper);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+  }
+
+  .rule {
+    border-top: 1px solid var(--color-line);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 48px;
+    padding: 0 1.4rem;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid transparent;
+    font-size: 16px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: transform 120ms ease, background-color 120ms ease, border-color 120ms ease, opacity 120ms ease;
+  }
+  .btn:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+  .btn:disabled {
+    opacity: 0.45;
+  }
+  .btn-sm {
+    min-height: 40px;
+    padding: 0 1.05rem;
+    font-size: 15px;
+  }
+  .btn-accent {
+    background: var(--color-accent);
+    color: var(--color-ink);
+  }
+  .btn-accent:hover:not(:disabled) {
+    background: #ff5e35;
+  }
+  .btn-ink {
+    background: var(--color-ink);
+    color: var(--color-bone);
+  }
+  .btn-ink:hover:not(:disabled) {
+    background: #33261f;
+  }
+  .btn-line {
+    background: transparent;
+    color: var(--color-ink);
+    border-color: var(--color-line-2);
+  }
+  .btn-line:hover:not(:disabled) {
+    border-color: var(--color-ink);
+  }
+
+  .field {
+    width: 100%;
+    height: 52px;
+    padding: 0 1rem;
+    border-radius: var(--radius-field);
+    background: #fff;
+    border: 1.5px solid var(--color-line-2);
+    color: var(--color-ink);
+    font-family: var(--font-mono);
+    font-size: 18px;
+  }
+  .field:focus {
+    outline: none;
+    border-color: var(--color-ink);
+  }
+  .field:disabled {
+    background: var(--color-sand);
+    color: var(--color-mute);
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 30px;
+    padding: 0 0.75rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--color-line-2);
+    font-size: 14px;
+    color: var(--color-soft);
+    white-space: nowrap;
+  }
+
+  /* segmented control: asset and round-length pickers */
+  .seg {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 4px;
+    border-radius: 16px;
+    background: var(--color-sand);
+  }
+  .seg-item {
+    min-height: 40px;
+    padding: 0 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-soft);
+    transition: background-color 120ms ease, color 120ms ease;
+  }
+  .seg-item:hover {
+    color: var(--color-ink);
+  }
+  .seg-item[aria-current="true"],
+  .seg-item[aria-pressed="true"] {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    box-shadow: 0 1px 2px rgba(28, 20, 16, 0.12);
+  }
+
+  /* the two sides of a ticket: UP is filled vermilion, DOWN is filled ink */
+  .side {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding: 0.9rem 1rem;
+    border-radius: 16px;
+    border: 1.5px solid var(--color-line-2);
+    background: #fff;
+    color: var(--color-ink);
+    text-align: left;
+    transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+  }
+  .side:disabled {
+    opacity: 0.5;
+  }
+  .side:hover:not(:disabled) {
+    border-color: var(--color-ink);
+  }
+  .side-up[aria-pressed="true"] {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+  .side-down[aria-pressed="true"] {
+    background: var(--color-ink);
+    border-color: var(--color-ink);
+    color: var(--color-bone);
+  }
+
+  /* ------------------------------------------------------------------
+     The rocker: a two-way switch. A dark housing set into the page, a
+     cream paddle that tilts towards the pressed half.
+     ------------------------------------------------------------------ */
+  .rocker {
+    position: relative;
+    width: min(100%, 270px);
+    aspect-ratio: 27 / 40;
+    padding: 7.5%;
+    border-radius: 15% / 10.2%;
+    background: linear-gradient(160deg, #3a2c24 0%, #1c1410 38%, #120c09 100%);
+    box-shadow:
+      inset 0 2px 1px rgba(255, 255, 255, 0.16),
+      inset 0 -3px 4px rgba(0, 0, 0, 0.55),
+      0 2px 3px rgba(28, 20, 16, 0.3),
+      0 26px 34px -14px rgba(28, 20, 16, 0.42),
+      0 60px 80px -30px rgba(28, 20, 16, 0.3);
+  }
+  .rocker-well {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 11% / 7.2%;
+    background: #0b0705;
+    box-shadow: inset 0 6px 14px rgba(0, 0, 0, 0.9), inset 0 -1px 1px rgba(255, 255, 255, 0.08);
+    perspective: 760px;
+  }
+  .rocker-paddle {
+    position: absolute;
+    inset: 2.5%;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    border: 0;
+    padding: 0;
+    border-radius: 9% / 5.6%;
+    color: var(--color-ink);
+    background: linear-gradient(180deg, #fffdf8 0%, #f1e9da 46%, #e3d8c4 54%, #f6efe2 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.95),
+      inset 0 -2px 3px rgba(28, 20, 16, 0.14),
+      0 14px 18px -8px rgba(0, 0, 0, 0.65);
+    transform-origin: 50% 50%;
+    transition: transform 240ms cubic-bezier(0.3, 1.5, 0.5, 1), background 240ms ease, box-shadow 240ms ease;
+  }
+  /* UP pressed: the top half sinks, light catches the lower half */
+  .rocker[data-side="up"] .rocker-paddle {
+    transform: rotateX(13deg);
+    background: linear-gradient(180deg, #d9cdb8 0%, #ebe2d1 44%, #f8f2e7 56%, #fffdf8 100%);
+  }
+  .rocker[data-side="down"] .rocker-paddle {
+    transform: rotateX(-13deg);
+    background: linear-gradient(180deg, #fffdf8 0%, #f8f2e7 44%, #ebe2d1 56%, #d9cdb8 100%);
+  }
+  .rocker-half {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6%;
+    font-weight: 800;
+    font-size: clamp(22px, 2.4vw, 30px);
+    letter-spacing: -0.02em;
+    color: var(--color-mute);
+    transition: color 200ms ease;
+  }
+  .rocker-half + .rocker-half {
+    border-top: 1px solid rgba(28, 20, 16, 0.14);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  }
+  .rocker-lamp {
+    width: 34%;
+    height: 9px;
+    border-radius: 99px;
+    background: rgba(28, 20, 16, 0.14);
+    box-shadow: inset 0 1px 2px rgba(28, 20, 16, 0.3);
+    transition: background-color 200ms ease, box-shadow 200ms ease;
+  }
+  .rocker[data-side="up"] .rocker-half-up {
+    color: var(--color-accent-deep);
+  }
+  .rocker[data-side="up"] .rocker-half-up .rocker-lamp {
+    background: var(--color-accent);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.5), 0 0 0 1px rgba(201, 51, 12, 0.35);
+  }
+  .rocker[data-side="down"] .rocker-half-down {
+    color: var(--color-ink);
+  }
+  .rocker[data-side="down"] .rocker-half-down .rocker-lamp {
+    background: var(--color-ink);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.25);
+  }
+
+  /* two-pot bar */
+  .pots {
+    display: flex;
+    height: 14px;
+    border-radius: 99px;
+    overflow: hidden;
+    background: var(--color-sand);
+  }
+  .pots-up {
+    background: var(--color-accent);
+  }
+  .pots-down {
+    background: var(--color-ink);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    .rocker-paddle {
+      transition: none;
+    }
+  }
+}

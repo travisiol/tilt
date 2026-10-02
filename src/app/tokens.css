@@ -1,0 +1,27 @@
+/*
+  TILT design tokens — the only place colours, type and radii are defined.
+  Warm bone paper, espresso ink, one vermilion. UP is the vermilion, DOWN is
+  the ink: the two sides are told apart by fill, never by a second loud colour.
+*/
+@theme {
+  --color-bone: #f3eee4;
+  --color-paper: #fbf8f1;
+  --color-sand: #e9e2d4;
+  --color-ink: #1c1410;
+  --color-soft: #5a4f47;
+  --color-mute: #857a70;
+  --color-line: rgba(28, 20, 16, 0.12);
+  --color-line-2: rgba(28, 20, 16, 0.26);
+  --color-accent: #ff4a1c;
+  --color-accent-deep: #c9330c;
+  --color-accent-wash: rgba(255, 74, 28, 0.12);
+
+  --font-sans: var(--font-bricolage), "Bricolage Grotesque", system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), "JetBrains Mono", ui-monospace, monospace;
+
+  --radius-card: 20px;
+  --radius-field: 12px;
+  --radius-pill: 999px;
+
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.7) inset, 0 1px 2px rgba(28, 20, 16, 0.05), 0 12px 32px -18px rgba(28, 20, 16, 0.22);
+}
