@@ -5,7 +5,7 @@ import { parseEther } from "viem";
 import { useAccount, useBalance, usePublicClient, useSwitchChain, useWriteContract } from "wagmi";
 import { ConnectButton } from "@/components/ConnectButton";
 import { LOCK_SECONDS, MIN_STAKE_WEI, durationLabel } from "@/config/game";
-import { TILT_ADDRESS, chain, explorer, isLive } from "@/config/network";
+import { TILT_ADDRESS, chain, explorer } from "@/config/network";
 import { tiltAbi } from "@/lib/abi/tilt";
 import { fmtCountdown, fmtEth, fmtMultiple } from "@/lib/format";
 import { quote, type PositionView } from "@/lib/rounds";
@@ -37,7 +37,7 @@ export function Ticket({
   onDone: () => void;
 }) {
   const { address, isConnected, chainId } = useAccount();
-  const balance = useBalance({ address, query: { enabled: isLive && Boolean(address), refetchInterval: 10_000 } });
+  const balance = useBalance({ address, query: { enabled: Boolean(address), refetchInterval: 10_000 } });
   const publicClient = usePublicClient();
   const { writeContractAsync } = useWriteContract();
   const { switchChainAsync } = useSwitchChain();
@@ -59,13 +59,16 @@ export function Ticket({
   const locked = start > 0 && now + LOCK_SECONDS >= end;
   const wrongChain = isConnected && chainId !== chain.id;
   const tooSmall = stakeWei < MIN_STAKE_WEI;
-  const q = isLive ? quote(stakeWei, up, upPot, downPot, feeBps) : undefined;
+  const q = quote(stakeWei, up, upPot, downPot, feeBps);
   const sideName = up ? "UP" : "DOWN";
-  const disabledAll = !isLive;
 
   const enter = async () => {
-    if (!TILT_ADDRESS || !publicClient || start === 0) return;
+    if (!publicClient || start === 0) return;
     setError(null);
+    if (!TILT_ADDRESS) {
+      setError("Staking is not open yet.");
+      return;
+    }
     setSent(null);
     try {
       setBusy("wallet");
@@ -106,11 +109,11 @@ export function Ticket({
       </p>
 
       <div className="mt-6 grid grid-cols-2 gap-3" role="group" aria-label="Side">
-        <button type="button" className="side side-up" aria-pressed={up} disabled={disabledAll} onClick={() => setUp(true)}>
+        <button type="button" className="side side-up" aria-pressed={up} onClick={() => setUp(true)}>
           <span className="text-[26px] font-extrabold leading-none tracking-tight">UP</span>
           <span className="text-[15px] opacity-80">close above strike</span>
         </button>
-        <button type="button" className="side side-down" aria-pressed={!up} disabled={disabledAll} onClick={() => setUp(false)}>
+        <button type="button" className="side side-down" aria-pressed={!up} onClick={() => setUp(false)}>
           <span className="text-[26px] font-extrabold leading-none tracking-tight">DOWN</span>
           <span className="text-[15px] opacity-80">close below strike</span>
         </button>
@@ -126,7 +129,6 @@ export function Ticket({
           inputMode="decimal"
           autoComplete="off"
           value={stake}
-          disabled={disabledAll}
           onChange={(e) => setStake(e.target.value.replace(/[^0-9.]/g, ""))}
         />
         <span className="num pointer-events-none absolute inset-y-0 right-4 flex items-center text-[16px] text-mute">ETH</span>
@@ -137,7 +139,6 @@ export function Ticket({
             key={v}
             type="button"
             className={`tag num hover:border-ink hover:text-ink disabled:opacity-50 ${stake === v ? "border-ink text-ink" : ""}`}
-            disabled={disabledAll}
             onClick={() => setStake(v)}
           >
             {v}
@@ -169,14 +170,7 @@ export function Ticket({
       ) : null}
 
       <div className="mt-6">
-        {!isLive ? (
-          <>
-            <button type="button" className="btn btn-ink w-full" disabled>
-              Contract not deployed
-            </button>
-            <p className="mt-3 text-[15px] text-soft">Staking is disabled: there is no contract to send a stake to yet.</p>
-          </>
-        ) : !isConnected ? (
+        {!isConnected ? (
           <ConnectButton size="md" className="w-full" />
         ) : wrongChain ? (
           <button type="button" className="btn btn-accent w-full" onClick={switchNetwork}>

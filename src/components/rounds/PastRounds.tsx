@@ -76,9 +76,7 @@ export function PastRounds({
   return (
     <section className="card p-6 sm:p-8" aria-label="Earlier rounds">
       <h2 className="text-[22px] font-bold tracking-tight">Earlier {durationLabel(duration)} rounds</h2>
-      {!isLive ? (
-        <p className="mt-3 text-soft">Nothing to show: the contract is not deployed, so no round has ever been played.</p>
-      ) : past.isError ? (
+      {past.isError ? (
         <p className="mt-3 text-soft">Earlier rounds could not be read from the chain.</p>
       ) : past.isLoading || now === 0 ? (
         <p className="mt-3 text-soft">Reading…</p>

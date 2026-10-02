@@ -2,7 +2,7 @@ import Link from "next/link";
 import { roundsHref } from "@/components/Nav";
 import { Rocker } from "@/components/Rocker";
 import { ASSETS, DURATIONS, LOCK_SECONDS, durationLabel } from "@/config/game";
-import { chain, isLive } from "@/config/network";
+import { chain } from "@/config/network";
 import { site } from "@/config/site";
 
 export function Hero() {
@@ -32,14 +32,7 @@ export function Hero() {
           </Link>
         </div>
         <p className="mt-6 max-w-xl text-[16px] text-soft">
-          {isLive ? (
-            <>Running on {chain.name}. No owner: the rules are fixed in the contract.</>
-          ) : (
-            <>
-              <strong className="font-semibold text-ink">Pre-launch.</strong> The contract is written and tested but not deployed, so nothing can
-              be staked yet.
-            </>
-          )}
+          Runs on {chain.name}. No owner: the rules are fixed in the contract.
         </p>
       </div>
       <div className="flex justify-center md:justify-end md:pr-6">

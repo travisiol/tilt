@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useAccount, usePublicClient, useWriteContract } from "wagmi";
 import { ASSETS, durationLabel } from "@/config/game";
-import { TILT_ADDRESS, chain, isLive } from "@/config/network";
+import { TILT_ADDRESS, chain } from "@/config/network";
 import { tiltAbi } from "@/lib/abi/tilt";
 import { fmtDateTime, fmtEth } from "@/lib/format";
 import type { MyRound, useMyRounds } from "@/lib/hooks";
@@ -102,9 +102,7 @@ export function MyPositions({
           </button>
         ) : null}
       </div>
-      {!isLive ? (
-        <p className="mt-3 text-soft">Nothing to show: positions and claims live in the contract, and it is not deployed.</p>
-      ) : !isConnected ? (
+      {!isConnected ? (
         <p className="mt-3 text-soft">Connect a wallet to see its rounds and claim what they owe.</p>
       ) : mine.isError ? (
         <p className="mt-3 text-soft">Your positions could not be read from the chain.</p>

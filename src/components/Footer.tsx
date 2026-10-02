@@ -20,16 +20,16 @@ export function Footer() {
           <dd className="num">
             {chain.name} · {CHAIN_ID}
           </dd>
-          <dt className="text-mute">Contract</dt>
-          <dd className="num">
-            {TILT_ADDRESS ? (
+          {TILT_ADDRESS ? (
+            <>
+              <dt className="text-mute">Contract</dt>
+              <dd className="num">
               <a href={explorer.address(TILT_ADDRESS)} className="underline decoration-line-2 underline-offset-4 hover:text-accent-deep" target="_blank" rel="noreferrer">
                 {shortAddress(TILT_ADDRESS)}
               </a>
-            ) : (
-              "not deployed"
-            )}
-          </dd>
+              </dd>
+            </>
+          ) : null}
           <dt className="text-mute">Oracle</dt>
           <dd className="num">
             <a href={explorer.address(PYTH_ADDRESS)} className="underline decoration-line-2 underline-offset-4 hover:text-accent-deep" target="_blank" rel="noreferrer">

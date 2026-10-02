@@ -24,7 +24,7 @@ export async function settleRound(opts: {
   onStep: (step: SettleStep) => void;
 }): Promise<void> {
   const { publicClient, send, asset, symbol, start, duration, onStep } = opts;
-  if (!TILT_ADDRESS) throw new Error("The contract is not deployed.");
+  if (!TILT_ADDRESS) throw new Error("Settlement is not open yet.");
   onStep("prints");
   const end = start + duration;
   const [strike, close] = await Promise.all([

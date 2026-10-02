@@ -9,7 +9,7 @@ import { defineChain, type Address } from "viem";
  * - The Pyth address was verified on the public RPC on 2026-09-15 (Pyth
  *   1.4.5, parsePriceFeedUpdatesUnique present, update fee 0).
  * - There is no deployed TILT contract. Until NEXT_PUBLIC_TILT_ADDRESS is
- *   set, TILT_ADDRESS is null and the site stays in its pre-launch state.
+ *   set, TILT_ADDRESS is null and the site shows its normal UI with empty rounds.
  *
  * Environment values are read as literal `process.env.NEXT_PUBLIC_*`
  * properties because Next only inlines those in the browser bundle.

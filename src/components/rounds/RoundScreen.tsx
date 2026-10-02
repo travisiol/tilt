@@ -12,6 +12,7 @@ import { useFeeBps, useMyRounds, usePastRounds, usePrices, useRound, useStrikePr
 import { sideMultiple } from "@/lib/rounds";
 import { MyPositions } from "./MyPositions";
 import { PastRounds } from "./PastRounds";
+import { PriceChart } from "./PriceChart";
 import { Ticket } from "./Ticket";
 
 /** One asset: the round in progress for the chosen length, the ticket, past rounds and the wallet's positions. */
@@ -68,26 +69,22 @@ export function RoundScreen({ asset }: { asset: number }) {
         </div>
       </div>
 
-      {!isLive ? (
-        <p className="mt-8 rounded-2xl border-[1.5px] border-accent bg-accent-wash px-5 py-4 text-[17px]" role="status">
-          <strong className="font-bold">Pre-launch: the contract is not deployed.</strong> There are no rounds, pots or positions to read, and nothing
-          can be staked, claimed or settled yet. The clock below only shows the schedule rounds will follow.
-        </p>
-      ) : null}
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-[1.15fr_1fr]">
+      <PriceChart symbol={a.symbol} duration={duration} />
+
+      <div className="mt-6 grid gap-6 lg:grid-cols-[1.15fr_1fr]">
         <section className="card p-6 sm:p-8" aria-label="Round in progress">
           <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-            <h2 className="text-[22px] font-bold tracking-tight">{isLive ? `This ${durationLabel(duration)} round` : `${durationLabel(duration)} schedule`}</h2>
+            <h2 className="text-[22px] font-bold tracking-tight">{`This ${durationLabel(duration)} round`}</h2>
             <span className="num text-[15px] text-soft">{start > 0 ? `${fmtClock(start)} → ${fmtClock(end)} UTC` : "…"}</span>
           </div>
 
           <div className="mt-8">
             <div className="text-[16px] text-soft">
-              {start === 0 ? "Reading the clock…" : !isLive ? "This slot ends in" : locked ? "Locked · ends in" : "Entries lock in"}
+              {start === 0 ? "Reading the clock…" : locked ? "Locked · ends in" : "Entries lock in"}
             </div>
-            <div className={`num mt-1 text-[64px] font-medium leading-none sm:text-[88px] ${isLive && locked ? "text-mute" : "text-ink"}`}>
-              {start === 0 ? "--:--" : fmtCountdown((!isLive || locked ? end : lockAt) - now)}
+            <div className={`num mt-1 text-[64px] font-medium leading-none sm:text-[88px] ${locked ? "text-mute" : "text-ink"}`}>
+              {start === 0 ? "--:--" : fmtCountdown((locked ? end : lockAt) - now)}
             </div>
           </div>
 
@@ -110,7 +107,7 @@ export function RoundScreen({ asset }: { asset: number }) {
                 <dd>
                   <div className="text-[17px] leading-snug">{start > 0 ? `The first Pyth print at or after ${fmtClock(start)} UTC` : "…"}</div>
                   <div className="text-[15px] text-mute">
-                    {!isLive ? "Read at settlement" : settlement ? "Not read yet" : "This site has no Pyth key to read it; it is read at settlement"}
+                    {settlement ? "Not read yet" : "Read at settlement"}
                   </div>
                 </dd>
               )}
@@ -127,9 +124,7 @@ export function RoundScreen({ asset }: { asset: number }) {
           </dl>
 
           <div className="mt-6 border-t border-line pt-6">
-            {!isLive ? (
-              <p className="text-soft">No pots: the contract is not deployed.</p>
-            ) : current.isError ? (
+            {current.isError ? (
               <p className="text-soft">The round could not be read from the chain. Check the network and reload.</p>
             ) : current.isLoading || start === 0 ? (
               <p className="text-soft">Reading the round…</p>
